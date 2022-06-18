@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#define WIDTH 1500
+#define WIDTH 1200
 #define HEIGHT 800
 
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
@@ -48,19 +48,41 @@ int main(void)
 	glViewport(0, 0, WIDTH, HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	glOrtho(-WIDTH / 2, WIDTH / 2, -WIDTH / 2, WIDTH / 2, 0.0, 1.0);
+	glOrtho(-WIDTH / 2, WIDTH / 2, -HEIGHT / 2, HEIGHT / 2, 0.0, 1.0);
 	
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwSetKeyCallback(window, key_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback);
 	glfwSetScrollCallback(window, scroll_callback);
 	glfwSwapInterval(1);
+
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
 	{
 		/* Render here */
 		glClear(GL_COLOR_BUFFER_BIT);
+
+
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(-WIDTH / 2, 340);
+		glVertex2f(WIDTH / 2, 340);
+		glEnd();
+
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(-(WIDTH/2 - 200), 340);
+		glVertex2f(-(WIDTH/2 - 200), -400);
+		glEnd();
+		
+		glBegin(GL_LINES);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f((WIDTH / 2 - 200), 340);
+		glVertex2f((WIDTH / 2 - 200), -400);
+		glEnd();
+		
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
