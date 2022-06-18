@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+#define WIDTH 1200
+#define HEIGHT 800
 
 int main(void)
 {
@@ -13,7 +15,7 @@ int main(void)
 
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+	window = glfwCreateWindow(WIDTH, HEIGHT, "Lilac", NULL, NULL);
 	if (!window)
 	{
 		glfwTerminate();
@@ -24,9 +26,12 @@ int main(void)
 	glfwMakeContextCurrent(window);
 
 	if (glewInit() != GLEW_OK)
-	{
 		std::cout << "GLEW initiation failed." << std::endl;
-	}
+	
+	glViewport(0, 0, WIDTH, HEIGHT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glOrtho(-WIDTH / 2, WIDTH / 2, -WIDTH / 2, WIDTH / 2, 0.0, 1.0);
 	
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
