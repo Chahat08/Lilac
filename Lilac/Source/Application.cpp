@@ -5,6 +5,23 @@
 #define WIDTH 1200
 #define HEIGHT 800
 
+static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    
+}
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    
+}
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    
+}
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    
+}
+
 int main(void)
 {
 	GLFWwindow* window;
@@ -32,6 +49,12 @@ int main(void)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glOrtho(-WIDTH / 2, WIDTH / 2, -WIDTH / 2, WIDTH / 2, 0.0, 1.0);
+	
+	glfwSetMouseButtonCallback(window, mouse_button_callback);
+	glfwSetKeyCallback(window, key_callback);
+	glfwSetCursorPosCallback(window, cursor_position_callback);
+	glfwSetScrollCallback(window, scroll_callback);
+	glfwSwapInterval(1);
 	
 	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window))
