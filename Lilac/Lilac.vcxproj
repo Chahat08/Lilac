@@ -138,8 +138,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Button.h" />
+    <ClInclude Include="Source\Menus.h" />
     <ClInclude Include="Source\Settings.h" />
     <ClInclude Include="Source\Shapes.h" />
+    <ClInclude Include="Source\Transformations.h" />
+    <ClInclude Include="Source\WindowProperties.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
