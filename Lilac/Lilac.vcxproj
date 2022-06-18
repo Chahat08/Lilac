@@ -137,6 +137,7 @@
     <ClCompile Include="Source\Implementation.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Button.h" />
     <ClInclude Include="Source\Settings.h" />
     <ClInclude Include="Source\Shapes.h" />
   </ItemGroup>
