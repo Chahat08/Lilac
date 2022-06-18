@@ -2,24 +2,24 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#define WIDTH 1200
+#define WIDTH 1500
 #define HEIGHT 800
 
 static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    
+	
 }
 void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 {
-    
+	
 }
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    
+	
 }
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
-    
+	
 }
 
 int main(void)
