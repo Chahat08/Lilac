@@ -361,6 +361,17 @@ void showClicked()
 	glVertex2i(selected_br.first, selected_br.second);
 	glVertex2i(selected_br.first, selected_tl.second);
 	glEnd();
+
+	glLineWidth(3);
+	glBegin(GL_LINE_LOOP);
+	glColor3d(0, 0, 0);
+	glVertex2i(menu_selected_tl.first, menu_selected_tl.second);
+	glVertex2i(menu_selected_tl.first, menu_selected_br.second);
+	glVertex2i(menu_selected_br.first, menu_selected_br.second);
+	glVertex2i(menu_selected_br.first, menu_selected_tl.second);
+	glEnd();
+	glLineWidth(1);
+
 }
 void set_points(GLFWwindow* window, int pt)
 {
@@ -391,7 +402,7 @@ void set_points(GLFWwindow* window, int pt)
 				{
 					colors[col_idx].clicked = false;
 					col_idx = i;
-					std::cout << i << std::endl;
+					// std::cout << i << std::endl;
 					selected_tl = { btn.getTopLeft().first + 5, btn.getTopLeft().second - 5 };
 					selected_br = { btn.getBtmRight().first - 5, btn.getBtmRight().second + 5 };
 					break;
@@ -410,6 +421,72 @@ void set_points(GLFWwindow* window, int pt)
 		}
 		return;
 	}
+
+
+	if (y <= colors[0].getTopLeft().second && y >= colors[colors.size() - 1].getBtmRight().second && x >= colors[0].getTopLeft().first && x <= colors[colors.size() - 1].getBtmRight().first)
+	{
+		int i = 0;
+		for (auto& btn : colors)
+		{
+			if (x >= btn.getTopLeft().first && x <= btn.getBtmRight().first && y >= btn.getBtmRight().second && y <= btn.getTopLeft().second)
+			{
+				btn.clicked = !btn.clicked;
+				if (btn.clicked)
+				{
+					colors[col_idx].clicked = false;
+					col_idx = i;
+					// std::cout << i << std::endl;
+					selected_tl = { btn.getTopLeft().first + 5, btn.getTopLeft().second - 5 };
+					selected_br = { btn.getBtmRight().first - 5, btn.getBtmRight().second + 5 };
+					break;
+				}
+				else
+				{
+					col_idx = colors.size() - 1;
+					selected_tl = { colors[colors.size() - 5].getTopLeft().first + 5,
+									colors[colors.size() - 5].getTopLeft().second - 5 };
+					selected_br = { colors[colors.size() - 5].getBtmRight().first - 5,
+									colors[colors.size() - 5].getBtmRight().second + 5 };
+					break;
+				}
+			}
+			++i;
+		}
+		return;
+	}
+	
+	if (y <= 400 && y>=350 && x>=-390 && x<=310)
+	{
+		int i = 0;
+		for (auto& btn : modes)
+		{
+			if (x >= btn.getTopLeft().first && x <= btn.getBtmRight().first && y >= btn.getBtmRight().second && y <= btn.getTopLeft().second)
+			{
+				btn.clicked = !btn.clicked;
+				if (btn.clicked)
+				{
+					modes[draw_mode].clicked = false;
+					draw_mode = i;
+					// std::cout << i << std::endl;
+					menu_selected_tl = { btn.getTopLeft().first + 5, btn.getTopLeft().second - 5 };
+					menu_selected_br = { btn.getBtmRight().first - 5, btn.getBtmRight().second + 5 };
+					break;
+				}
+				else
+				{
+					draw_mode = 0;
+					menu_selected_tl = { colors[colors.size() - 5].getTopLeft().first + 5,
+									colors[colors.size() - 5].getTopLeft().second - 5 };
+					menu_selected_br = { colors[colors.size() - 5].getBtmRight().first - 5,
+									colors[colors.size() - 5].getBtmRight().second + 5 };
+					break;
+				}
+			}
+			++i;
+		}
+		return;
+	}
+
 	if (draw_mode == 2)
 	{
 		if (!bc_selection_mode)
@@ -700,6 +777,21 @@ int main()
 	selected_br = { colors[colors.size() - 5].getBtmRight().first - 5,
 					colors[colors.size() - 5].getBtmRight().second + 5 };
 
+
+	int menu_start_x = -390, menu_start_y = 390;
+
+	for (int i = 0; i < 6; ++i)
+	{
+		modes.push_back(Button(menu_start_x, menu_start_y, menu_start_x + 100, menu_start_y - 40, col_vals[54]));
+		menu_start_x += 120;
+	}
+
+	menu_selected_tl = { modes[0].getTopLeft().first + 5,
+					modes[0].getTopLeft().second - 5 };
+	menu_selected_br = { modes[0].getBtmRight().first - 5,
+					modes[0].getBtmRight().second + 5 };
+
+
 	/*cimg_library::CImg<unsigned char> image("D:\\dev\\OpenGL\\Lilac\\Lilac\\Source\\img\\test.png");
 	unsigned char* ptr = image.data(10, 10); // get pointer to pixel @ 10,10
 	unsigned char pixel = *ptr;
@@ -780,6 +872,8 @@ int main()
 		glEnd();
 
 		for (auto& btn : colors)
+			btn.drawButton();
+		for (auto& btn : modes)
 			btn.drawButton();
 		showClicked();
 
