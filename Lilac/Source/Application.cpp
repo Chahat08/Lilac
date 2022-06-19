@@ -381,6 +381,8 @@ void set_points(GLFWwindow* window, int pt)
 	int x = xpos - 600;
 	int y = 400 - ypos;
 
+	//std::cout << x << " " << y << std::endl;
+
 	// rotation set pivot
 	if (transformation == 2)
 	{
@@ -423,7 +425,7 @@ void set_points(GLFWwindow* window, int pt)
 	}
 
 
-	if (y <= colors[0].getTopLeft().second && y >= colors[colors.size() - 1].getBtmRight().second && x >= colors[0].getTopLeft().first && x <= colors[colors.size() - 1].getBtmRight().first)
+	/*if (y <= colors[0].getTopLeft().second && y >= colors[colors.size() - 1].getBtmRight().second && x >= colors[0].getTopLeft().first && x <= colors[colors.size() - 1].getBtmRight().first)
 	{
 		int i = 0;
 		for (auto& btn : colors)
@@ -453,7 +455,7 @@ void set_points(GLFWwindow* window, int pt)
 			++i;
 		}
 		return;
-	}
+	}*/
 	
 	if (y <= 400 && y>=350 && x>=-390 && x<=310)
 	{
@@ -466,7 +468,8 @@ void set_points(GLFWwindow* window, int pt)
 				if (btn.clicked)
 				{
 					modes[draw_mode].clicked = false;
-					draw_mode = i;
+					if (i <= 3) draw_mode = i;
+					else if (i == 4) FILL_MODE = 1;
 					// std::cout << i << std::endl;
 					menu_selected_tl = { btn.getTopLeft().first + 5, btn.getTopLeft().second - 5 };
 					menu_selected_br = { btn.getBtmRight().first - 5, btn.getBtmRight().second + 5 };
@@ -475,10 +478,10 @@ void set_points(GLFWwindow* window, int pt)
 				else
 				{
 					draw_mode = 0;
-					menu_selected_tl = { colors[colors.size() - 5].getTopLeft().first + 5,
-									colors[colors.size() - 5].getTopLeft().second - 5 };
-					menu_selected_br = { colors[colors.size() - 5].getBtmRight().first - 5,
-									colors[colors.size() - 5].getBtmRight().second + 5 };
+					menu_selected_tl = { modes[modes.size() - 5].getTopLeft().first + 5,
+									modes[modes.size() - 5].getTopLeft().second - 5 };
+					menu_selected_br = { modes[modes.size() - 5].getBtmRight().first - 5,
+									modes[modes.size() - 5].getBtmRight().second + 5 };
 					break;
 				}
 			}
@@ -724,6 +727,46 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 	}
 
 }
+void draw_curve_icons()
+{
+	glLineWidth(1);
+	glBegin(GL_LINE_STRIP);
+	glColor3d(0, 0, 0);
+	glVertex2i(27, 376);
+	glVertex2i(25, 380);
+	glVertex2i(23, 376);
+	glVertex2i(25, 372);
+	glVertex2i(27, 368);
+	glVertex2i(25, 364);
+	glVertex2i(23, 368);
+	glEnd();
+	glLineWidth(1);
+
+	glLineWidth(1);
+	glBegin(GL_LINE_STRIP);
+	glColor3d(0, 0, 0);
+	glVertex2i(136, 376);
+	glVertex2i(136, 360);
+	glVertex2i(147, 360);
+	glVertex2i(147, 376);
+	glEnd();
+	glLineWidth(1);
+
+	glLineWidth(1);
+	glBegin(GL_LINE_LOOP);
+	glColor3d(0, 0, 0);
+	glVertex2i(-102, 376);
+	glVertex2i(-100, 374);
+	glVertex2i(-98, 372);
+	glVertex2i(-100, 370);
+	glVertex2i(-102, 368);
+	glVertex2i(-100, 366);
+	glVertex2i(-98, 364);
+	glVertex2i(-100, 362);
+	glVertex2i(-102, 360);
+	glEnd();
+	glLineWidth(1);
+}
 int main()
 {
 	shapes.reserve(100);
@@ -780,7 +823,7 @@ int main()
 
 	int menu_start_x = -390, menu_start_y = 390;
 
-	for (int i = 0; i < 6; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		modes.push_back(Button(menu_start_x, menu_start_y, menu_start_x + 100, menu_start_y - 40, col_vals[54]));
 		menu_start_x += 120;
@@ -791,6 +834,9 @@ int main()
 	menu_selected_br = { modes[0].getBtmRight().first - 5,
 					modes[0].getBtmRight().second + 5 };
 
+	Shape line_icon(-358, 366, -315, 374, 0, 0, 0, "1");
+	Shape circle_icon(-220, 369, 10, 0, 0, 0, "1");
+	Shape circle_icon_fill(141, 376, 5, 0, 0, 0, "1");
 
 	/*cimg_library::CImg<unsigned char> image("D:\\dev\\OpenGL\\Lilac\\Lilac\\Source\\img\\test.png");
 	unsigned char* ptr = image.data(10, 10); // get pointer to pixel @ 10,10
@@ -826,12 +872,12 @@ int main()
 		glVertex2d(-400, -400);
 		glEnd();
 
-		glPointSize(w.ax_size);
+		/*glPointSize(w.ax_size);
 		glBegin(GL_LINES);
 		glColor3d(w.ax_color[0], w.ax_color[1], w.ax_color[2]);
 		glVertex2d(400, 340);
 		glVertex2d(400, -400);
-		glEnd();
+		glEnd();*/
 
 		// translation
 		if (!shapes.empty() && transformation == 1 && (vert || horiz))
@@ -845,6 +891,7 @@ int main()
 		if (!shapes.empty() && transformation == 3)
 			scale_shape();
 
+		
 		for (auto sh : shapes)
 		{
 			if (sh.type == 0)
@@ -876,6 +923,13 @@ int main()
 		for (auto& btn : modes)
 			btn.drawButton();
 		showClicked();
+
+		glPointSize(5);
+		draw_line(line_icon);
+		draw_circle(circle_icon);
+		draw_circle(circle_icon_fill);
+		glPointSize(1);
+		draw_curve_icons();
 
 		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
